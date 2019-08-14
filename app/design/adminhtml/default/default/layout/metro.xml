@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <metro_adminhtml_metro_index>
+        <reference name="content">
+            <block type="metro/adminhtml_metro" name="metro" />
+        </reference>
+    </metro_adminhtml_metro_index>
+</layout>

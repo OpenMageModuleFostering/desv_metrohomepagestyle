@@ -1,0 +1,107 @@
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('metro/jquery-1.5.1.min.js'); ?>" ></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('metro/MetroJs.js'); ?>" ></script>
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl('metro/MetroJs.css'); ?>" type="text/css">
+<link rel="stylesheet" href="<?php echo $this->getSkinUrl('metro/metrohome.css'); ?>" type="text/css">
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $metrohomepage = Mage::getStoreConfig('metro/metro/metrohomepage'); ?>
+<?php $enablenewproduct = Mage::getStoreConfig('metro/metro/enablenewproduct'); ?>
+<?php $enablecategory = Mage::getStoreConfig('metro/metro/enablecategory'); ?>
+<?php $idproducts = Mage::getStoreConfig('metro/metro/ids'); ?>
+<?php $idcs = Mage::getStoreConfig("metro/metro/idcs"); ?>
+<?php $randomcolor = Mage::getStoreConfig("metro/metro/randomcolor"); ?>
+<?php $metrocolor = $this->getMetroColors(); ?>
+<?php $count_metrocolor = count($metrocolor); ?>
+<?php $randommetrocolor = $this->getRandomMetroColors(); ?>
+<?php if ($metrohomepage == 1): ?>
+<?php if ($idproducts != ''):  // enable featured products ?>
+<div class="homepage-row">
+	<h1 class="homepage-row-title">Featured Products</h1>
+</div>
+<?php $products = $this->getFeaturedProducts(); ?>
+<?php $i = 0; ?>
+<?php if ($randomcolor == 1) { $getcolor = $randommetrocolor; } else { $getcolor = $metrocolor; } ?>
+<div class="homepage-row">
+<?php foreach ($products as $product): ?>
+<?php $i++; ?>
+<?php if ($i == $count_metrocolor) { $i=0; } ?>
+<?php $_product = Mage::getModel('catalog/product')->load($product); ?>
+	<div class="live-tile <?php echo $getcolor[$i]; ?>" data-stops="100%" data-speed="850" data-delay="-1">
+		<div class="metroinfo" >
+			<a href="<?php echo $_product->getProductUrl(); ?>" >
+			<h2><?php echo $_product->getName(); ?></h2>
+			<p><?php echo $this->cutText($_product->getShortDescription(),15); ?></p>
+			</a>
+		</div>
+		<div class="metroimg"><a href="<?php echo $_product->getProductUrl(); ?>" ><img src="<?php echo $_product->getImageUrl(); ?>" alt="" /></a></div>
+	</div>
+<?php endforeach; ?>
+</div>
+<?php endif; ?>
+<?php if ($enablenewproduct == 1): ?>
+<div class="homepage-row">
+	<h1 class="homepage-row-title">Recently Added Products</h1>
+</div>
+<div class="homepage-row">
+	<?php 
+		$collection = Mage::getModel('catalog/product')
+                        ->getCollection()
+                        ->addAttributeToSelect('*')
+						->addAttributeToSort('entity_id', 'desc');
+		$k=0;
+		$countall = count($collection);
+		foreach ($collection as $producta) {
+	?>
+	<?php $k++; ?>
+	<?php if ($k == $countall) { $k=0; } ?>
+	<?php if ($k >= 3) continue; ?>
+	<div class="live-tile <?php echo $getcolor[$k]; ?>" data-stops="100%" data-speed="850" data-delay="-1">
+		<div class="metroinfo">
+			<a href="<?php echo $producta->getProductUrl(); ?>" >
+			<h2><?php echo $producta->getName(); ?></h2>
+			<p><?php echo $this->cutText($producta->getShortDescription(),15); ?></p>
+			</a>
+		</div>
+		<div class="metroimg"><a href="<?php echo $producta->getProductUrl(); ?>" ><img src="<?php echo $producta->getImageUrl(); ?>" alt="" /></a></div>
+	</div>
+	<?php } ?>
+</div>
+<?php endif; // enable new products ?>
+<?php //category ?>
+<?php if ($enablecategory == 1): ?>
+<?php if ($idcs != '') : ?>
+<?php $categories_c = $this->getCategoryIDS(); ?>
+<?php foreach ($categories_c as $category_c): ?>
+<div class="homepage-row">
+	<h1 class="homepage-row-title"><a href="<?php echo Mage::getModel("catalog/category")->load($category_c)->getUrl(); ?>"><?php echo Mage::getModel("catalog/category")->load($category_c)->getName(); ?></a></h1>
+</div>
+<div class="homepage-row">
+	<?php $categoryp = Mage::getModel('catalog/category')->load($category_c); ?>
+	<?php $products_c = $categoryp->getProductCollection()->addAttributeToSort('created_at','DESC'); ?>
+	<?php $j = 0; ?>
+	<?php $countpc = count($products_c); ?>
+	<?php foreach ($products_c as $product_c): ?>
+	<?php $j++; ?>
+	<?php if ($j == $countpc) { $j=0; } ?>
+	<?php if ($j >= 6) continue; ?>
+	<?php $productc= Mage::getModel('catalog/product')->load($product_c->getId()); ?>
+	<div class="live-tile <?php echo $getcolor[$j]; ?>" data-stops="100%" data-speed="850" data-delay="-1">
+		<div class="metroinfo">
+			<a href="<?php echo $productc->getProductUrl(); ?>" >
+			<h2><?php echo $productc->getName(); ?></h2>
+			<p><?php echo $this->cutText($productc->getShortDescription(),15); ?></p>
+			</a>
+		</div>
+		<div class="metroimg"><a href="<?php echo $productc->getProductUrl(); ?>" ><img src="<?php echo $productc->getImageUrl(); ?>" alt="" /></a></div>
+	</div>
+	<?php endforeach; ?>
+</div>
+<?php endforeach; ?>
+<?php endif; ?>
+<?php endif; ?>
+<?php // end category ?>
+<?php endif; // enable metrohomepage ?>
+
+<script type="text/javascript">
+	jQuery.noConflict()
+    jQuery(".live-tile").liveTile();
+</script>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Desv_Metro>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Desv_Metro>
+    </modules>
+</config> 
