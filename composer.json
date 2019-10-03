@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Desv_MetroHomepageStyle",
+    "name": "OpenMageModuleFostering\/Desv_MetroHomepageStyle",
     "type": "magento-module",
     "license": "GNU-General-Public-License",
     "homepage": "",
     "description": "support interface for homepage same as interface  of Windows 8,  look winkle, colorful as windows 8",
     "authors": [
-    {
-        "name": "desvus",
-        "email": "desv.us@gmail.com"
-    }
-],
+        {
+            "name": "desvus",
+            "email": "desv.us@gmail.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
